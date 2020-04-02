@@ -7,7 +7,7 @@
   tasks:
               
     - name: create apache user
-      user: name= "apache"
+      user: name="apache"
 
     - name: Copy template
       template: src="anagrams.j2"
