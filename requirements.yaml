@@ -1,0 +1,28 @@
+---
+- hosts: servers
+  remote_user: root
+  
+  tasks:
+    - name: Install Apache
+      apt: name=httpd update_cache=yes state=latest
+
+    - name: Install php
+      apt: name=php update_cache=yes state=latest
+
+    - name: Make sure Apache is working
+      service: name=httpd state=started
+
+    - name: Stat of one update
+      stat: path=/root/update-done
+      register: update_stat
+
+    - name: Yum Update
+      apt: name=* state=latest
+      when: update_stat.stat.exists == False
+
+    - name: Register for only one update
+      shell: "echo done > /root/update-done"
+      when: update_stat.stat.exists == False
+
+
+
